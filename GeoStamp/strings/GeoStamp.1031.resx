@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Display names and descriptions for everything declared in
+    ControlManifest.Input.xml. PCFHub reads the manifest, so these strings are
+    what appear in the component's API reference on the hub as well as in the
+    maker's properties pane.
+
+    Copy this file to add a language — GeoStamp.3082.resx for Spanish, and so
+    on — then list it under <resources> in the manifest.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="GeoStamp_Name" xml:space="preserve">
+    <value>Geo-Stempel</value>
+  </data>
+  <data name="GeoStamp_Desc" xml:space="preserve">
+    <value>Schreibt den Standort des Geräts und optional ein Foto in einen Datensatz.</value>
+  </data>
+  <data name="value_Name" xml:space="preserve">
+    <value>Standort</value>
+  </data>
+  <data name="value_Desc" xml:space="preserve">
+    <value>Die Spalte, in die die formatierten Koordinaten geschrieben werden.</value>
+  </data>
+  <data name="latitude_Name" xml:space="preserve">
+    <value>Breitengrad</value>
+  </data>
+  <data name="latitude_Desc" xml:space="preserve">
+    <value>Optional. Eine Dezimalspalte, die den Breitengrad als Zahl aufnimmt.</value>
+  </data>
+  <data name="longitude_Name" xml:space="preserve">
+    <value>Längengrad</value>
+  </data>
+  <data name="longitude_Desc" xml:space="preserve">
+    <value>Optional. Eine Dezimalspalte, die den Längengrad als Zahl aufnimmt.</value>
+  </data>
+  <data name="coordinatePrecision_Name" xml:space="preserve">
+    <value>Nachkommastellen</value>
+  </data>
+  <data name="coordinatePrecision_Desc" xml:space="preserve">
+    <value>Wie viele Nachkommastellen die geschriebenen Koordinaten haben. Sechs entspricht etwa 0,1 m.</value>
+  </data>
+  <data name="accuracyThreshold_Name" xml:space="preserve">
+    <value>Genauigkeitswarnung (m)</value>
+  </data>
+  <data name="accuracyThreshold_Desc" xml:space="preserve">
+    <value>Eine ungenauere Ortung wird trotzdem gespeichert und als ungefähr gekennzeichnet.</value>
+  </data>
+  <data name="showMap_Name" xml:space="preserve">
+    <value>Karte anzeigen</value>
+  </data>
+  <data name="showMap_Desc" xml:space="preserve">
+    <value>Zeigt eine Kartenvorschau. Dabei wird eine Kachel von einem externen Dienst geladen, wodurch Apps mit dieser Komponente Premium werden.</value>
+  </data>
+  <data name="tileUrlTemplate_Name" xml:space="preserve">
+    <value>Kachel-URL</value>
+  </data>
+  <data name="tileUrlTemplate_Desc" xml:space="preserve">
+    <value>Eine https-Kachel-URL mit {z}, {x} und {y}. Zeigen Sie auf Ihren eigenen Kachelserver, damit Anfragen im Mandanten bleiben.</value>
+  </data>
+  <data name="recordId_Name" xml:space="preserve">
+    <value>Datensatz-ID</value>
+  </data>
+  <data name="recordId_Desc" xml:space="preserve">
+    <value>Binden Sie sie an die ID-Spalte des Datensatzes. Nur zum Anhängen eines Fotos nötig, und nur wenn der Host sie nicht liefert.</value>
+  </data>
+  <data name="recordEntity_Name" xml:space="preserve">
+    <value>Datensatztabelle</value>
+  </data>
+  <data name="recordEntity_Desc" xml:space="preserve">
+    <value>Der logische Name der Tabelle, etwa account. An einen statischen Wert binden.</value>
+  </data>
+  <data name="stampCount_Name" xml:space="preserve">
+    <value>Anzahl Stempel</value>
+  </data>
+  <data name="stampCount_Desc" xml:space="preserve">
+    <value>Erhöht sich bei jedem Stempel, damit eine Wiederholung am selben Ort weiterhin OnChange auslöst.</value>
+  </data>
+  <data name="lastNoteId_Name" xml:space="preserve">
+    <value>Letzte Notiz-ID</value>
+  </data>
+  <data name="lastNoteId_Desc" xml:space="preserve">
+    <value>Die Notiz, in der das letzte Foto gespeichert wurde. Leer, wenn der Host keine speichern kann.</value>
+  </data>
+  <data name="GeoStamp_NoAccess" xml:space="preserve">
+    <value>Sie haben keinen Zugriff auf diesen Standort.</value>
+  </data>
+  <data name="GeoStamp_Empty" xml:space="preserve">
+    <value>Kein Standort gespeichert.</value>
+  </data>
+  <data name="GeoStamp_Stamp" xml:space="preserve">
+    <value>Standort speichern</value>
+  </data>
+  <data name="GeoStamp_Locating" xml:space="preserve">
+    <value>Standort wird ermittelt…</value>
+  </data>
+  <data name="GeoStamp_Photo" xml:space="preserve">
+    <value>Foto hinzufügen</value>
+  </data>
+  <data name="GeoStamp_Accuracy" xml:space="preserve">
+    <value>Genauigkeit etwa {0} m.</value>
+  </data>
+  <data name="GeoStamp_Vague" xml:space="preserve">
+    <value>Ungefähr – Genauigkeit nur etwa {0} m.</value>
+  </data>
+  <data name="GeoStamp_Denied" xml:space="preserve">
+    <value>Die Standortberechtigung wurde verweigert. Erlauben Sie den Standort für diese App und versuchen Sie es erneut.</value>
+  </data>
+  <data name="GeoStamp_Unavailable" xml:space="preserve">
+    <value>Dieses Gerät kann seinen Standort nicht melden.</value>
+  </data>
+  <data name="GeoStamp_NoGeolocation" xml:space="preserve">
+    <value>Der Standort ist auf diesem Client nicht verfügbar. Er funktioniert in der mobilen App und in Canvas-Apps.</value>
+  </data>
+  <data name="GeoStamp_Failed" xml:space="preserve">
+    <value>Der Standort konnte nicht gelesen werden: {0}</value>
+  </data>
+  <data name="GeoStamp_NoPhotoHost" xml:space="preserve">
+    <value>Fotos können nur in einem modellgesteuerten Formular gespeichert werden.</value>
+  </data>
+  <data name="GeoStamp_NoRecord" xml:space="preserve">
+    <value>Das Foto kann nicht angehängt werden: Das Steuerelement kennt seinen Datensatz nicht. Binden Sie die Eigenschaften Datensatz-ID und Datensatztabelle.</value>
+  </data>
+  <data name="GeoStamp_PhotoSaved" xml:space="preserve">
+    <value>Foto in den Notizen des Datensatzes gespeichert.</value>
+  </data>
+  <data name="GeoStamp_PhotoFailed" xml:space="preserve">
+    <value>Das Foto konnte nicht gespeichert werden: {0}</value>
+  </data>
+  <data name="GeoStamp_PhotoFailedUnknown" xml:space="preserve">
+    <value>Das Foto konnte nicht gespeichert werden.</value>
+  </data>
+  <data name="GeoStamp_MapAlt" xml:space="preserve">
+    <value>Karte des gespeicherten Standorts</value>
+  </data>
+  <data name="GeoStamp_MapAttribution" xml:space="preserve">
+    <value>© OpenStreetMap-Mitwirkende</value>
+  </data>
+</root>

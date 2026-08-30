@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <!--
+    The version here is what the Power Platform upgrades on, and the release
+    workflow refuses to publish a tag that disagrees with it. Bump this in the
+    same commit as the tag.
+  -->
+  <control namespace="PCFHub"
+           constructor="GeoStamp"
+           version="0.1.0"
+           display-name-key="GeoStamp_Name"
+           description-key="GeoStamp_Desc"
+           control-type="standard">
+
+    <!--
+      Leave this disabled unless the control calls a third-party service.
+
+      `enabled="true"` makes the control **premium**, and premium is a cost
+      somebody else pays: every end user of an app containing this component
+      then needs a Power Apps licence rather than an Office 365 one. Nothing
+      fails to build, nothing warns at install, and the person who finds out is
+      not the person who typed it — so this is worth confirming with whoever
+      owns the control rather than flipping to make a `fetch` work.
+
+      When it is genuinely enabled, list every domain. `<domain>` children are
+      declarative and can be listed under `enabled="false"` too, which is the
+      schema's own second example; it is the `enabled` attribute alone that
+      carries the licensing consequence.
+
+          <external-service-usage enabled="true">
+            <domain>tile.example.com</domain>
+          </external-service-usage>
+
+      `npm run check` fails on `enabled="true"` with no domain, and warns on
+      `enabled="true"` at all.
+
+      IT IS ENABLED HERE, AND THAT WAS A DECISION. The optional map thumbnail
+      loads a tile from a third-party host, which is exactly what this element
+      exists to declare. The cost is real and falls on the installer: an app
+      containing this component is a premium app.
+
+      What keeps that honest is that the map is off unless a maker turns it on.
+      `showMap` is a TwoOptions input, and a TwoOptions input cannot default to
+      on — so the shipped default reaches no external host at all, and every
+      other feature of the control works with it off. See docs/limitations.md,
+      which says this to the person deciding whether to install it.
+
+      `tileUrlTemplate` lets a maker point at their own tile server instead, in
+      which case nothing leaves their own infrastructure. The domain below is
+      the default's, not a restriction.
+    -->
+    <external-service-usage enabled="true">
+      <domain>tile.openstreetmap.org</domain>
+    </external-service-usage>
+
+    <!--
+      PCFHub generates the component's API reference from this file, at the tag
+      of each release.
+
+      It records `display-name-key` and `description-key` *verbatim* — it does
+      not read the .resx — so a reader sees the key itself unless something
+      changes it. Two ways to get readable text: keep the keys themselves
+      readable, or correct them once in the hub's admin panel, where editing a
+      property locks that field so later syncs leave it alone.
+
+      The platform still resolves these against the .resx for the maker's
+      properties pane, so the keys must exist there either way.
+    -->
+    <!--
+      The stamp, as text. Bound and required: this is the column the control is
+      put on, and the only output every host can receive.
+    -->
+    <property name="value"
+              display-name-key="value_Name"
+              description-key="value_Desc"
+              of-type="SingleLine.Text"
+              usage="bound"
+              required="true" />
+
+    <!--
+      The same fix as numbers, for a maker who wants to query on it.
+
+      Both are bound and BOTH ARE OPTIONAL, which is not the same as saying
+      they are unimportant: a maker may map neither, one, or both, and the
+      control has to behave in all four cases. An unmapped bound property
+      arrives with `raw === null` and is indistinguishable from a mapped column
+      that happens to be empty — so what the control keys on is whether it has
+      a value to write, and `getOutputs` omits the ones it does not.
+
+      Decimal rather than FP: Dataverse's own latitude and longitude columns
+      (address1_latitude and friends) are Decimal with 5 decimal places, and a
+      control that hands back a float to a decimal column loses the difference
+      in a place nobody looks.
+    -->
+    <property name="latitude"
+              display-name-key="latitude_Name"
+              description-key="latitude_Desc"
+              of-type="Decimal"
+              usage="bound"
+              required="false" />
+
+    <property name="longitude"
+              display-name-key="longitude_Name"
+              description-key="longitude_Desc"
+              of-type="Decimal"
+              usage="bound"
+              required="false" />
+
+    <!--
+      Six places is roughly 0.1 m at the equator, which is finer than any
+      consumer GPS resolves — so the digits past it are noise that reads as
+      precision. It is configurable because the useful answer depends on what
+      the column is for, not because six is often wrong.
+    -->
+    <property name="coordinatePrecision"
+              display-name-key="coordinatePrecision_Name"
+              description-key="coordinatePrecision_Desc"
+              of-type="Whole.None"
+              usage="input"
+              required="false"
+              default-value="6" />
+
+    <!--
+      Metres. A fix worse than this is stamped ANYWAY, and said so.
+
+      Refusing a vague fix is the wrong call: a 1200-metre fix from inside a
+      warehouse is a real answer and often the only one available, and a
+      control that discards it leaves the user with nothing and no explanation.
+      Stamping it silently is the other wrong call. So it stamps, and the
+      readout says how far off it might be.
+    -->
+    <property name="accuracyThreshold"
+              display-name-key="accuracyThreshold_Name"
+              description-key="accuracyThreshold_Desc"
+              of-type="Whole.None"
+              usage="input"
+              required="false"
+              default-value="100" />
+
+    <!--
+      The premium half, and the reason it is a TwoOptions.
+
+      A TwoOptions input cannot be defaulted to on — the platform ignores a
+      `default-value` of "true" here — which is normally an annoyance and is
+      exactly right this once: the feature that costs the installer a licence
+      is off until somebody asks for it.
+    -->
+    <property name="showMap"
+              display-name-key="showMap_Name"
+              description-key="showMap_Desc"
+              of-type="TwoOptions"
+              usage="input"
+              required="false" />
+
+    <!--
+      `{z}`, `{x}` and `{y}` are substituted with slippy-map tile coordinates.
+      Point it at an internal tile server and no request leaves the tenant.
+    -->
+    <property name="tileUrlTemplate"
+              display-name-key="tileUrlTemplate_Name"
+              description-key="tileUrlTemplate_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false"
+              default-value="https://tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+    <!--
+      The record this control is on, supplied by the maker.
+
+      This looks like it should be unnecessary, and it is the platform's own
+      documented answer. `context` deliberately does not carry the record's
+      identity, "because [components] need to be supported on multiple surfaces
+      where this information may not be available" — the FAQ says to add input
+      properties and bind them on the form, entityId to the record's own id
+      column and entityName to a static value.
+
+      The control prefers the undocumented `context.mode.contextInfo` when the
+      host has it, and falls back to these. Both paths exist because neither is
+      sufficient: contextInfo is absent from the type definitions and from
+      canvas, and these two are empty unless a maker configured them.
+
+      Only the photo needs them. Coordinates stamp regardless.
+    -->
+    <property name="recordId"
+              display-name-key="recordId_Name"
+              description-key="recordId_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <property name="recordEntity"
+              display-name-key="recordEntity_Name"
+              description-key="recordEntity_Desc"
+              of-type="SingleLine.Text"
+              usage="input"
+              required="false" />
+
+    <!--
+      Outputs, and the first one is the interesting one.
+
+      `OnChange` fires when an output CHANGES, not when the control writes one.
+      Two stamps from the same spot produce the same coordinates, so without a
+      counter the second one is silent and a Power Fx handler never runs. The
+      counter is what makes a repeat observable — the same problem
+      pcf-star-rating solved with `?? undefined` and pcf-action-button with
+      `PressCount`.
+    -->
+    <property name="stampCount"
+              display-name-key="stampCount_Name"
+              description-key="stampCount_Desc"
+              of-type="Whole.None"
+              usage="output" />
+
+    <!--
+      The Note the photo was written to, and canvas's only route to it: canvas
+      has no WebAPI, so there the photo is never written and this stays empty.
+    -->
+    <property name="lastNoteId"
+              display-name-key="lastNoteId_Name"
+              description-key="lastNoteId_Desc"
+              of-type="SingleLine.Text"
+              usage="output" />
+
+    <resources>
+      <code path="index.ts" order="1" />
+      <css path="css/GeoStamp.css" order="1" />
+      <!--
+        Every language the control ships.
+
+        A .resx that exists on disk but is not listed here is not shipped, and
+        nothing warns — the file is simply never packed, and the control runs
+        in English for that locale while the repository looks translated.
+        `npm run check` catches both that and a key missing from a language.
+
+        Drop the ones you will not maintain. A stale translation is worse than
+        an honest fallback to English, and every key added to 1033 is a key
+        owed to each file listed here.
+
+        THE ORDER IS DELIBERATE AND 1033 GOES LAST. `pcf-start` picks the .resx
+        by manifest order rather than by locale: it reads whichever file is
+        listed *last* and ignores the LCID and the browser language entirely.
+        The platform itself ignores the order completely — a real app resolves
+        from the user's provisioned language — so `npm start` is the only thing
+        in the world that reads this order, and it is ordered for it. Listing
+        1033 first is the tidier-looking arrangement and it makes `npm start`
+        render the whole control in Japanese, which reads as a broken build.
+
+        The consequence to remember: ADD A NEW LANGUAGE ABOVE THIS LINE, not
+        below it. Appending a sixth file after 1033 silently moves the harness
+        to that language, and the symptom shows up in a `npm start` session
+        nobody connects to a manifest edit.
+      -->
+      <resx path="strings/GeoStamp.3082.resx" version="1.0.0" />
+      <resx path="strings/GeoStamp.1036.resx" version="1.0.0" />
+      <resx path="strings/GeoStamp.1031.resx" version="1.0.0" />
+      <resx path="strings/GeoStamp.1041.resx" version="1.0.0" />
+      <resx path="strings/GeoStamp.1033.resx" version="1.0.0" />
+    </resources>
+
+    <!--
+      EVERY ONE OF THESE IS required="false", AND THAT IS THE DESIGN.
+
+      `required="true"` does not make a feature more available; it makes the
+      component fail to load on a host that lacks it. This control runs in four
+      places that each lack a different subset:
+
+        model-driven, mobile   everything works
+        model-driven, web      NO GEOLOCATION — getCurrentPosition is documented
+                               for canvas and the mobile client only. The web
+                               form gets the manual path and the map.
+        canvas                 no WebAPI at all, so no photo. Location works.
+        Power Pages            no Device API, no Utility, and uses-feature must
+                               not be "true" anywhere — which alone settles this.
+
+      So the control feature-detects all four and degrades in four different
+      directions rather than refusing to load in three of them. Every branch is
+      a switch in dev/host.js and an assertion in dev/smoke.js.
+
+      Utility is here for one thing: `@odata.bind` needs the parent's entity
+      SET name, which only `getEntityMetadata` knows.
+    -->
+    <feature-usage>
+      <uses-feature name="Device.getCurrentPosition" required="false" />
+      <uses-feature name="Device.captureImage" required="false" />
+      <uses-feature name="WebAPI" required="false" />
+      <uses-feature name="Utility" required="false" />
+    </feature-usage>
+  </control>
+</manifest>

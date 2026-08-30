@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Display names and descriptions for everything declared in
+    ControlManifest.Input.xml. PCFHub reads the manifest, so these strings are
+    what appear in the component's API reference on the hub as well as in the
+    maker's properties pane.
+
+    Copy this file to add a language — GeoStamp.3082.resx for Spanish, and so
+    on — then list it under <resources> in the manifest.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="GeoStamp_Name" xml:space="preserve">
+    <value>位置スタンプ</value>
+  </data>
+  <data name="GeoStamp_Desc" xml:space="preserve">
+    <value>デバイスの位置情報と、必要に応じて写真をレコードに記録します。</value>
+  </data>
+  <data name="value_Name" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="value_Desc" xml:space="preserve">
+    <value>書式設定された座標を書き込む列。</value>
+  </data>
+  <data name="latitude_Name" xml:space="preserve">
+    <value>緯度</value>
+  </data>
+  <data name="latitude_Desc" xml:space="preserve">
+    <value>省略可能。緯度を数値として受け取る 10 進数の列。</value>
+  </data>
+  <data name="longitude_Name" xml:space="preserve">
+    <value>経度</value>
+  </data>
+  <data name="longitude_Desc" xml:space="preserve">
+    <value>省略可能。経度を数値として受け取る 10 進数の列。</value>
+  </data>
+  <data name="coordinatePrecision_Name" xml:space="preserve">
+    <value>小数点以下の桁数</value>
+  </data>
+  <data name="coordinatePrecision_Desc" xml:space="preserve">
+    <value>書き込む座標の小数点以下の桁数。6 桁で約 0.1 m です。</value>
+  </data>
+  <data name="accuracyThreshold_Name" xml:space="preserve">
+    <value>精度の警告 (m)</value>
+  </data>
+  <data name="accuracyThreshold_Desc" xml:space="preserve">
+    <value>これより精度が低い測位も記録され、おおよその値として表示されます。</value>
+  </data>
+  <data name="showMap_Name" xml:space="preserve">
+    <value>地図を表示</value>
+  </data>
+  <data name="showMap_Desc" xml:space="preserve">
+    <value>地図のサムネイルを表示します。外部サービスからタイルを読み込むため、このコンポーネントを使うアプリはプレミアムになります。</value>
+  </data>
+  <data name="tileUrlTemplate_Name" xml:space="preserve">
+    <value>地図タイルの URL</value>
+  </data>
+  <data name="tileUrlTemplate_Desc" xml:space="preserve">
+    <value>{z}、{x}、{y} を含む https のタイル URL。自社のタイルサーバーを指定すると、要求はテナント内に留まります。</value>
+  </data>
+  <data name="recordId_Name" xml:space="preserve">
+    <value>レコード ID</value>
+  </data>
+  <data name="recordId_Desc" xml:space="preserve">
+    <value>レコード自身の ID 列にバインドします。写真の添付時に、ホストが ID を提供しない場合にのみ必要です。</value>
+  </data>
+  <data name="recordEntity_Name" xml:space="preserve">
+    <value>レコードのテーブル</value>
+  </data>
+  <data name="recordEntity_Desc" xml:space="preserve">
+    <value>テーブルの論理名 (account など)。静的な値にバインドします。</value>
+  </data>
+  <data name="stampCount_Name" xml:space="preserve">
+    <value>スタンプ回数</value>
+  </data>
+  <data name="stampCount_Desc" xml:space="preserve">
+    <value>スタンプごとに増えるため、同じ場所で繰り返しても OnChange が発生します。</value>
+  </data>
+  <data name="lastNoteId_Name" xml:space="preserve">
+    <value>最後のメモ ID</value>
+  </data>
+  <data name="lastNoteId_Desc" xml:space="preserve">
+    <value>直近の写真を保存したメモ。ホストが保存できない場合は空です。</value>
+  </data>
+  <data name="GeoStamp_NoAccess" xml:space="preserve">
+    <value>この位置情報にアクセスする権限がありません。</value>
+  </data>
+  <data name="GeoStamp_Empty" xml:space="preserve">
+    <value>位置情報は記録されていません。</value>
+  </data>
+  <data name="GeoStamp_Stamp" xml:space="preserve">
+    <value>位置を記録</value>
+  </data>
+  <data name="GeoStamp_Locating" xml:space="preserve">
+    <value>位置情報を取得中…</value>
+  </data>
+  <data name="GeoStamp_Photo" xml:space="preserve">
+    <value>写真を追加</value>
+  </data>
+  <data name="GeoStamp_Accuracy" xml:space="preserve">
+    <value>誤差は約 {0} m です。</value>
+  </data>
+  <data name="GeoStamp_Vague" xml:space="preserve">
+    <value>おおよその位置です。誤差は約 {0} m あります。</value>
+  </data>
+  <data name="GeoStamp_Denied" xml:space="preserve">
+    <value>位置情報の許可が拒否されました。このアプリに位置情報を許可してから、もう一度お試しください。</value>
+  </data>
+  <data name="GeoStamp_Unavailable" xml:space="preserve">
+    <value>このデバイスは位置情報を取得できません。</value>
+  </data>
+  <data name="GeoStamp_NoGeolocation" xml:space="preserve">
+    <value>このクライアントでは位置情報を利用できません。モバイルアプリとキャンバスアプリで動作します。</value>
+  </data>
+  <data name="GeoStamp_Failed" xml:space="preserve">
+    <value>位置情報を取得できませんでした: {0}</value>
+  </data>
+  <data name="GeoStamp_NoPhotoHost" xml:space="preserve">
+    <value>写真はモデル駆動型フォームでのみ保存できます。</value>
+  </data>
+  <data name="GeoStamp_NoRecord" xml:space="preserve">
+    <value>写真を添付できません。この コントロール は対象のレコードを判別できません。レコード ID とレコードのテーブルのプロパティをバインドしてください。</value>
+  </data>
+  <data name="GeoStamp_PhotoSaved" xml:space="preserve">
+    <value>写真をレコードのメモに保存しました。</value>
+  </data>
+  <data name="GeoStamp_PhotoFailed" xml:space="preserve">
+    <value>写真を保存できませんでした: {0}</value>
+  </data>
+  <data name="GeoStamp_PhotoFailedUnknown" xml:space="preserve">
+    <value>写真を保存できませんでした。</value>
+  </data>
+  <data name="GeoStamp_MapAlt" xml:space="preserve">
+    <value>記録した位置の地図</value>
+  </data>
+  <data name="GeoStamp_MapAttribution" xml:space="preserve">
+    <value>© OpenStreetMap の貢献者</value>
+  </data>
+</root>

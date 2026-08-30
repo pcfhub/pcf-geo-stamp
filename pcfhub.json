@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "slug": "pcf-geo-stamp",
+  "name": "Geo Stamp",
+  "tagline": "Stamp the device's location, and optionally a photo, onto a record.",
+  "category": "input",
+  "tags": [
+    "location",
+    "geolocation",
+    "device",
+    "mobile",
+    "photo",
+    "premium"
+  ],
+  "control": {
+    "namespace": "PCFHub",
+    "constructor": "GeoStamp",
+    "type": "field",
+    "framework": "standard",
+    "manifestPath": "GeoStamp/ControlManifest.Input.xml"
+  },
+  "links": {
+    "homepage": "https://github.com/pcfhub/pcf-geo-stamp",
+    "support": "https://github.com/pcfhub/pcf-geo-stamp/issues",
+    "license": "MIT"
+  },
+  "docs": {
+    "path": "docs"
+  },
+  "media": {
+    "logo": "media/logo.png",
+    "screenshots": []
+  },
+  "demo": {
+    "fidelity": "limited",
+    "bundle": "out/controls/GeoStamp/bundle.js",
+    "styles": [
+      "out/controls/GeoStamp/css/GeoStamp.css"
+    ],
+    "limitations": [
+      "Nothing here knows where you are. The demo sandbox has no context.device, so pressing Record location shows the control's own \"not available on this client\" state rather than a reading — which is also what a model-driven form in a browser shows, because getCurrentPosition is documented for canvas apps and the mobile client only. A real fix needs the Power Apps mobile app or a canvas app.",
+      "Add photo is not offered at all. It needs context.webAPI to write a note and context.utils to resolve the table name behind it, and the sandbox has neither — so the button is hidden here exactly as it is in a canvas app, rather than shown and failing.",
+      "The map is off, and turning it on is a licensing decision rather than a display one. It loads a tile from tile.openstreetmap.org, which is why the manifest declares external-service-usage and why any app containing this component is a premium app. Everything else the control does works with it off.",
+      "The presets below hand the control a coordinate directly, the way a saved record would. That is the state after a stamp, not a stamp — the readout, the precision, the accuracy label and the theming are all real; only the device call behind them is absent."
+    ],
+    "presets": [
+      {
+        "slug": "recorded",
+        "name": "A recorded location",
+        "description": "A column that already holds a reading, which is what most people see most of the time — the control spends far more of its life displaying a stamp than taking one.",
+        "props": {
+          "value": "47.606200, -122.332100",
+          "coordinatePrecision": 6,
+          "accuracyThreshold": 100,
+          "showMap": false
+        },
+        "isDefault": true
+      },
+      {
+        "slug": "coarse",
+        "name": "Fewer decimal places",
+        "description": "The same reading at two decimal places — about a kilometre. Six is the default because it is finer than any consumer GPS resolves; fewer is a deliberate choice to record roughly where somebody was rather than exactly.",
+        "props": {
+          "value": "47.61, -122.33",
+          "coordinatePrecision": 2,
+          "accuracyThreshold": 100,
+          "showMap": false
+        }
+      },
+      {
+        "slug": "empty",
+        "name": "Nothing recorded yet",
+        "description": "The empty state, which says so rather than showing a blank box. This is what a new record looks like before anyone presses anything.",
+        "props": {
+          "value": "",
+          "coordinatePrecision": 6,
+          "accuracyThreshold": 100,
+          "showMap": false
+        }
+      }
+    ]
+  }
+}

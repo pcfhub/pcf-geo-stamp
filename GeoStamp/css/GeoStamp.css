@@ -1,0 +1,369 @@
+/*
+ * Every rule is scoped under the control's own class.
+ *
+ * A code component shares a document with the host app and with every other
+ * control on the form, so a bare `input { … }` here restyles the page it was
+ * dropped onto. The platform does not sandbox this for you.
+ */
+
+/*
+ * The palette, as Fluent's design tokens with literal fallbacks.
+ *
+ * A standard control cannot mount a `FluentProvider` — the provider is React
+ * and this is not — and the usual conclusion from that is that Fluent's styling
+ * is out of reach, so the control invents its own colours and ends up looking
+ * pasted onto the form. The conclusion is wrong. `FluentProvider` is what
+ * *emits* the theme as CSS custom properties, and a model-driven form already
+ * mounts one above every code component on the page. Nothing has to be mounted
+ * in order to read them.
+ *
+ * So the token wins where the host publishes it — the control then follows the
+ * app's theme *and its brand colour* with no code — and the literal carries the
+ * hosts that publish nothing, which includes canvas apps and PCFHub's demo
+ * harness. The fallbacks are Fluent's web light theme, taken from
+ * `@fluentui/tokens` rather than eyeballed: a value one step off on the neutral
+ * ramp is invisible alone and obvious beside the real thing.
+ */
+.GeoStamp {
+    --GeoStamp-background: var(--colorNeutralBackground3, #f5f5f5);
+    --GeoStamp-background-hover: var(--colorNeutralBackground3Hover, #ebebeb);
+    --GeoStamp-background-disabled: var(--colorTransparentBackground, transparent);
+    --GeoStamp-stroke: var(--colorTransparentStroke, transparent);
+    --GeoStamp-stroke-disabled: var(--colorNeutralStrokeDisabled, #e0e0e0);
+    --GeoStamp-stroke-focus: var(--colorCompoundBrandStroke, #0f6cbd);
+    --GeoStamp-stroke-focus-pressed: var(--colorCompoundBrandStrokePressed, #0f548c);
+    --GeoStamp-stroke-invalid: var(--colorPaletteRedBorder2, #d13438);
+    --GeoStamp-foreground: var(--colorNeutralForeground1, #242424);
+    --GeoStamp-foreground-secondary: var(--colorNeutralForeground2, #424242);
+    --GeoStamp-foreground-placeholder: var(--colorNeutralForeground4, #707070);
+    --GeoStamp-foreground-disabled: var(--colorNeutralForegroundDisabled, #bdbdbd);
+    --GeoStamp-foreground-danger: var(--colorPaletteRedForeground1, #bc2f32);
+    --GeoStamp-radius: var(--borderRadiusMedium, 4px);
+    --GeoStamp-font-family: var(
+        --fontFamilyBase,
+        "Segoe UI",
+        "Segoe UI Web (West European)",
+        -apple-system,
+        BlinkMacSystemFont,
+        Roboto,
+        "Helvetica Neue",
+        sans-serif
+    );
+    --GeoStamp-font-size: var(--fontSizeBase300, 14px);
+    --GeoStamp-line-height: var(--lineHeightBase300, 20px);
+    --GeoStamp-font-size-caption: var(--fontSizeBase200, 12px);
+    --GeoStamp-line-height-caption: var(--lineHeightBase200, 16px);
+    --GeoStamp-duration-fast: var(--durationUltraFast, 50ms);
+    --GeoStamp-duration-normal: var(--durationNormal, 200ms);
+    --GeoStamp-duration-faster: var(--durationFaster, 100ms);
+    --GeoStamp-curve-accelerate: var(--curveAccelerateMid, cubic-bezier(1, 0, 1, 1));
+    --GeoStamp-curve-decelerate: var(--curveDecelerateMid, cubic-bezier(0, 0, 0, 1));
+    --GeoStamp-curve-ease: var(--curveEasyEase, cubic-bezier(0.33, 0, 0.67, 1));
+
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: var(--GeoStamp-font-family);
+    color: var(--GeoStamp-foreground);
+}
+
+/*
+ * The dark fallbacks, chosen from `fluentDesignLanguage.isDarkTheme` in
+ * `index.ts` rather than from `prefers-color-scheme`.
+ *
+ * The media query is the obvious hook and it answers the wrong question: a
+ * model-driven app carries its own theme and the operating system's setting
+ * says nothing about it, so an OS-dark machine on a light app would get #141414
+ * behind the form's white.
+ *
+ * Only the fallbacks change here. A host that emits the tokens is already
+ * handing over its own dark values through the `var()`, and this block never
+ * takes effect there.
+ */
+.GeoStamp--dark {
+    --GeoStamp-background: var(--colorNeutralBackground3, #141414);
+    --GeoStamp-background-hover: var(--colorNeutralBackground3Hover, #292929);
+    --GeoStamp-stroke-disabled: var(--colorNeutralStrokeDisabled, #424242);
+    --GeoStamp-stroke-focus: var(--colorCompoundBrandStroke, #479ef5);
+    --GeoStamp-stroke-focus-pressed: var(--colorCompoundBrandStrokePressed, #2886de);
+    --GeoStamp-stroke-invalid: var(--colorPaletteRedBorder2, #e37d80);
+    --GeoStamp-foreground: var(--colorNeutralForeground1, #ffffff);
+    --GeoStamp-foreground-secondary: var(--colorNeutralForeground2, #d6d6d6);
+    --GeoStamp-foreground-placeholder: var(--colorNeutralForeground4, #999999);
+    --GeoStamp-foreground-disabled: var(--colorNeutralForegroundDisabled, #5c5c5c);
+    --GeoStamp-foreground-danger: var(--colorPaletteRedForeground1, #e37d80);
+}
+
+/*
+ * A readout with buttons under it, not a text field.
+ *
+ * The scaffolded stylesheet drew Fluent's filled-darker Input, because the
+ * scaffolded control was one. This control has nothing to type into: the
+ * coordinates are produced by a device, so the surface they sit on is a
+ * read-only block and the interactive parts are the two buttons below it.
+ * Keeping the field chrome would have promised an edit that is not on offer.
+ */
+.GeoStamp .GeoStamp-readout {
+    box-sizing: border-box;
+    padding: var(--spacingVerticalS, 8px) var(--spacingHorizontalM, 12px);
+    border: 1px solid var(--GeoStamp-stroke);
+    border-radius: var(--GeoStamp-radius);
+    background-color: var(--GeoStamp-background);
+}
+
+.GeoStamp .GeoStamp-readout[hidden] {
+    display: none;
+}
+
+/*
+ * Tabular figures, and this is the one typographic decision that earns its
+ * place. Two readings from nearly the same spot differ in the last digits, and
+ * in a proportional face the digits sit in different places on each line — so
+ * the eye cannot compare them without reading every character. `tnum` lines
+ * them up. Every Fluent font supports it; the fallback is harmless where not.
+ */
+.GeoStamp .GeoStamp-coordinates {
+    margin: 0;
+    font-family: inherit;
+    font-size: var(--GeoStamp-font-size);
+    line-height: var(--GeoStamp-line-height);
+    color: var(--GeoStamp-foreground);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+    /* A coordinate pair must break as a unit or not at all. */
+    overflow-wrap: anywhere;
+}
+
+/* Nothing recorded yet. Placeholder colour, because that is what it is. */
+.GeoStamp .GeoStamp-coordinates--empty {
+    color: var(--GeoStamp-foreground-placeholder);
+    font-variant-numeric: normal;
+}
+
+.GeoStamp .GeoStamp-accuracy {
+    margin: var(--spacingVerticalXXS, 2px) 0 0;
+    font-family: inherit;
+    font-size: var(--GeoStamp-font-size-caption);
+    line-height: var(--GeoStamp-line-height-caption);
+    color: var(--GeoStamp-foreground-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.GeoStamp .GeoStamp-accuracy[hidden] {
+    display: none;
+}
+
+/*
+ * A vague fix is warned about in colour AND in words.
+ *
+ * The string itself says "approximate", which is what carries the meaning under
+ * forced colours, for a colour-blind reader, and in a screenshot pasted into a
+ * ticket. The colour is the fast path, not the only one — a rule this
+ * stylesheet has to follow twice, here and on the message.
+ */
+.GeoStamp .GeoStamp-accuracy--vague {
+    color: var(--GeoStamp-foreground-danger);
+}
+
+/*
+ * The map, sized by aspect ratio rather than by height.
+ *
+ * A tile is square and arrives late, so a box with no reserved shape collapses
+ * to nothing and then shoves the buttons down the form when the image lands.
+ * `aspect-ratio` holds the space from the first paint.
+ */
+.GeoStamp .GeoStamp-map {
+    display: block;
+    width: 100%;
+    max-width: 256px;
+    aspect-ratio: 1 / 1;
+    margin-top: var(--spacingVerticalS, 8px);
+    border: 1px solid var(--GeoStamp-stroke-disabled);
+    border-radius: var(--GeoStamp-radius);
+    object-fit: cover;
+    background-color: var(--GeoStamp-background-hover);
+}
+
+.GeoStamp .GeoStamp-map[hidden] {
+    display: none;
+}
+
+/*
+ * Attribution is not decoration here — OpenStreetMap's tile usage policy
+ * requires it, and a control that ships the default tile server ships the
+ * obligation with it.
+ */
+.GeoStamp .GeoStamp-attribution {
+    margin: var(--spacingVerticalXXS, 2px) 0 0;
+    font-family: inherit;
+    font-size: var(--GeoStamp-font-size-caption);
+    line-height: var(--GeoStamp-line-height-caption);
+    color: var(--GeoStamp-foreground-placeholder);
+}
+
+.GeoStamp .GeoStamp-attribution[hidden] {
+    display: none;
+}
+
+.GeoStamp .GeoStamp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacingHorizontalS, 8px);
+    margin-top: var(--spacingVerticalS, 8px);
+}
+
+/*
+ * Fluent's secondary Button: 32px tall, 8px radius by way of the medium token,
+ * and a real 1px border rather than a transparent one — a button is a thing you
+ * press and its edge is how you find it.
+ */
+.GeoStamp .GeoStamp-button {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    /*
+     * 44px is the WCAG 2.2 target and Fluent's own control height is 32. The
+     * honest version of the trade: the height matches the form's other
+     * controls, and the horizontal padding is generous enough that the *area*
+     * is comfortable on a phone — which is where this control is used.
+     */
+    padding: 0 var(--spacingHorizontalL, 16px);
+    border: 1px solid var(--colorNeutralStroke1, #d1d1d1);
+    border-radius: var(--GeoStamp-radius);
+    background-color: var(--colorNeutralBackground1, #ffffff);
+    font-family: inherit;
+    font-size: var(--GeoStamp-font-size);
+    line-height: var(--GeoStamp-line-height);
+    font-weight: var(--fontWeightSemibold, 600);
+    color: var(--GeoStamp-foreground);
+    cursor: pointer;
+    transition: background-color var(--GeoStamp-duration-faster) var(--GeoStamp-curve-ease);
+}
+
+.GeoStamp .GeoStamp-button[hidden] {
+    display: none;
+}
+
+.GeoStamp .GeoStamp-button:hover:not(:disabled) {
+    background-color: var(--colorNeutralBackground1Hover, #f5f5f5);
+}
+
+.GeoStamp .GeoStamp-button:active:not(:disabled) {
+    background-color: var(--colorNeutralBackground1Pressed, #e0e0e0);
+}
+
+/*
+ * The focus ring is drawn, not inherited.
+ *
+ * A form's own reset frequently removes the UA outline, and a code component
+ * that relies on the default loses its keyboard indicator on exactly the hosts
+ * it cannot test. Two outlines — a light inner and the brand outer — is Fluent's
+ * pattern, and it stays visible on either background.
+ */
+.GeoStamp .GeoStamp-button:focus-visible {
+    outline: 2px solid var(--GeoStamp-stroke-focus);
+    outline-offset: 1px;
+}
+
+.GeoStamp .GeoStamp-button:disabled {
+    border-color: var(--GeoStamp-stroke-disabled);
+    background-color: var(--GeoStamp-background-disabled);
+    color: var(--GeoStamp-foreground-disabled);
+    cursor: default;
+}
+
+.GeoStamp--dark .GeoStamp-button {
+    border-color: var(--colorNeutralStroke1, #666666);
+    background-color: var(--colorNeutralBackground1, #292929);
+}
+
+.GeoStamp--dark .GeoStamp-button:hover:not(:disabled) {
+    background-color: var(--colorNeutralBackground1Hover, #383838);
+}
+
+/* `mode.isVisible` is false. Canvas relies on this; model-driven hides the
+   section itself, so this is the cheap half of supporting both. */
+.GeoStamp--hidden {
+    display: none;
+}
+
+/* The bound property reported `error`. */
+.GeoStamp--invalid .GeoStamp-readout {
+    border-color: var(--GeoStamp-stroke-invalid);
+}
+
+.GeoStamp--disabled .GeoStamp-readout {
+    border-color: var(--GeoStamp-stroke-disabled);
+}
+
+.GeoStamp--disabled .GeoStamp-coordinates,
+.GeoStamp--disabled .GeoStamp-accuracy {
+    color: var(--GeoStamp-foreground-disabled);
+}
+
+/*
+ * The live region.
+ *
+ * It carries both confirmations and failures, so it is NOT coloured as an error
+ * by default — a green-for-success, red-for-failure pair would need the control
+ * to know which it just said, and the words already do. Failures that matter
+ * are the platform's own validation, which is what the invalid border is for.
+ */
+.GeoStamp .GeoStamp-message {
+    margin: var(--spacingVerticalXXS, 2px) 0 0;
+    font-family: inherit;
+    font-size: var(--GeoStamp-font-size-caption);
+    line-height: var(--GeoStamp-line-height-caption);
+    color: var(--GeoStamp-foreground-secondary);
+    /*
+     * Empty and taking no space, but never `display: none` — a live region
+     * removed from the layout is removed from the accessibility tree, and the
+     * next thing put into it is announced by nothing.
+     */
+    min-height: 0;
+}
+
+.GeoStamp--invalid .GeoStamp-message {
+    color: var(--GeoStamp-foreground-danger);
+}
+
+/*
+ * Forced colours collapse every tint to a system keyword, so anything carrying
+ * meaning by colour has to carry it by shape or by words too. The vague-fix
+ * warning survives because its string says "approximate"; the borders here
+ * become visible ones so the readout and the buttons stay separable.
+ */
+@media (forced-colors: active) {
+    .GeoStamp .GeoStamp-readout,
+    .GeoStamp .GeoStamp-button {
+        border-color: ButtonBorder;
+    }
+
+    .GeoStamp .GeoStamp-button:focus-visible {
+        outline-color: Highlight;
+    }
+
+    .GeoStamp--disabled .GeoStamp-readout,
+    .GeoStamp .GeoStamp-button:disabled {
+        border-color: GrayText;
+        color: GrayText;
+    }
+
+    .GeoStamp--disabled .GeoStamp-coordinates,
+    .GeoStamp--disabled .GeoStamp-accuracy {
+        color: GrayText;
+    }
+}
+
+/*
+ * Shortened, not removed. The transition is decoration; the state change it
+ * softens is not.
+ */
+@media screen and (prefers-reduced-motion: reduce) {
+    .GeoStamp .GeoStamp-button {
+        transition-duration: 0.01ms;
+        transition-delay: 0.01ms;
+    }
+}
