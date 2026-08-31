@@ -64,8 +64,26 @@
      * looks in production rather than throwing.
      */
     var STRINGS = {
-        GeoStamp_Name: 'Geo Stamp',
-        GeoStamp_NoAccess: 'You do not have access to this field.',
+        GeoStamp_Name: "Geo Stamp",
+        GeoStamp_Desc: "Stamp the device's location, and optionally a photo, onto a record.",
+        GeoStamp_NoAccess: "You do not have access to this location.",
+        GeoStamp_Empty: "No location recorded.",
+        GeoStamp_Stamp: "Record location",
+        GeoStamp_Locating: "Finding you…",
+        GeoStamp_Photo: "Add photo",
+        GeoStamp_Accuracy: "Accurate to about {0} m.",
+        GeoStamp_Vague: "Approximate — accurate to about {0} m only.",
+        GeoStamp_Denied: "Location permission was refused. Allow location for this app, then try again.",
+        GeoStamp_Unavailable: "This device cannot report its location.",
+        GeoStamp_NoGeolocation: "Location is not available on this client. It works in the mobile app and in canvas apps.",
+        GeoStamp_Failed: "The location could not be read: {0}",
+        GeoStamp_NoPhotoHost: "Photos can only be saved on a model-driven form.",
+        GeoStamp_NoRecord: "The photo cannot be attached: this control does not know which record it is on. Bind the Record id and Record table properties.",
+        GeoStamp_PhotoSaved: "Photo saved to the record's notes.",
+        GeoStamp_PhotoFailed: "The photo could not be saved: {0}",
+        GeoStamp_PhotoFailedUnknown: "The photo could not be saved.",
+        GeoStamp_MapAlt: "Map of the recorded location",
+        GeoStamp_MapAttribution: "© OpenStreetMap contributors",
     };
 
     /**

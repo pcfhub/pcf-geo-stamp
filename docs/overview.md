@@ -28,10 +28,14 @@ reading at all — not "sometimes", not "if you allow it": the API is absent. So
 the control tells you which of those you are looking at, in those words, rather
 than showing a failure you cannot act on.
 
+::image{src=media/screenshot-unavailable.png alt="The control on a model-driven form in a browser, saying location is not available on this client"}
+
 The other constraint is that a bad fix is still a fix. A reading from inside a
 warehouse can be a kilometre out, and refusing it leaves the user with an empty
 column and nothing to do about it. Geo Stamp records it and says how far off it
 might be.
+
+::image{src=media/screenshot-approximate.png alt="A recorded location labelled approximate, accurate to about 1200 m only"}
 
 ## What it works with
 

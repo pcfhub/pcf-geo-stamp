@@ -29,7 +29,12 @@
   },
   "media": {
     "logo": "media/logo.png",
-    "screenshots": []
+    "screenshots": [
+      "media/screenshot.png",
+      "media/screenshot-unavailable.png",
+      "media/screenshot-approximate.png",
+      "media/screenshot-dark.png"
+    ]
   },
   "demo": {
     "fidelity": "limited",

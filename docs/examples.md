@@ -103,6 +103,8 @@ applies whether or not you turn it on, but the external request only happens
 when you do.
 :::
 
+::image{src=media/screenshot.png alt="The control with the map thumbnail turned on" zoom}
+
 To keep every request inside your own network, point **Map tile URL** at your
 own tile server:
 
