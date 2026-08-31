@@ -63,8 +63,20 @@ why the property exists. There is a formula in [Canvas apps](canvas).
 
 ## Why are my Latitude and Longitude columns slightly different from the text?
 
-Dataverse rounds a decimal column to its configured precision on save. Set the
+Dataverse rounds a numeric column to its configured precision on save. Set the
 columns' precision to at least the control's **Decimal places** property.
+
+If you bound the **standard** address columns, that is the explanation:
+`address1_latitude` and `address1_longitude` are precision 5 and cannot be
+changed, while the control defaults to 6 decimal places. Set **Decimal places**
+to 5 and the two agree exactly. The difference is about 10 cm either way.
+
+## Can I bind it to address1_latitude?
+
+Yes. Those columns are **Floating Point Number**, and the control accepts both
+Floating Point and Decimal for its Latitude and Longitude properties precisely
+so that the standard address columns work — a control that accepted only Decimal
+would not offer them in the column picker at all.
 
 ## Does it work offline?
 

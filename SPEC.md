@@ -105,6 +105,40 @@ what the control holds, which is also what distinguishes this control's own echo
 from a genuine external change — a save, a rollback, another control on the same
 column. Two assertions cover the pair.
 
+## The type that made the control unbindable
+
+`latitude` and `longitude` shipped as `of-type="Decimal"`, on the stated
+reasoning that Dataverse's own address columns were Decimal. **They are
+`Double`.** Read from the account table reference: `Address1_Latitude` is
+`Type: Double`, `MinValue -90`, `MaxValue 90`, `Precision 5`, and
+`Address1_Longitude` the same between ±180. Every `address1_` / `address2_` /
+`address3_` pair on contact, lead, publisher and the rest is the same.
+
+The consequence is worse than a mismatched number: the form designer's column
+picker only offers columns whose type matches the property, so a maker opening
+an account form **could not select the column at all**. The control was
+unbindable on precisely the tables it was designed for, and nothing about that
+is visible from the repository — it builds, it passes, and the failure is a
+dropdown that is empty on somebody else's screen.
+
+Fixed with a `<type-group name="coordinate">` of `FP` and `Decimal`.
+`Whole.None` is deliberately excluded: it would let the designer offer an
+integer column and the platform would truncate every reading to the nearest
+degree, about 111 km.
+
+This is the good half of the type-group trade rather than the expensive one.
+`refreshTypes` generates `NumberProperty` — `raw: number | null` — and
+`IOutputs` keeps `latitude?: number`, so not one cast changed in the control.
+What is lost is the subtype: `DecimalNumberMetadata.Precision` is out of reach
+behind `NumberMetadata`, which is why the precision advice in
+`docs/model-driven.md` is addressed to the maker rather than enforced in code.
+
+**And the standard columns are precision 5, where this control defaults to 6.**
+So the sixth decimal place is rounded away on save to an `address1_latitude`,
+and the text column keeps it — the two disagree in the last digit by design of
+the platform, not of the control. Said in `docs/model-driven.md` and
+`docs/faq.md`.
+
 ## Demo
 
 `limited`, and settled three times over: the device APIs, the `webAPI` write,
@@ -139,7 +173,7 @@ Nothing here has been on a real Power App. Three items are load-bearing:
   has never been seen happen. Needs an app in an environment with an Office
   365-only user.
 
-Two smaller ones: that `Decimal` bound properties round to the column's
+Two smaller ones: that the numeric bound properties round to the column's
 precision the way `docs/model-driven.md` claims, and that
 `context.mode.contextInfo` is in fact populated on a form — this control's
 fallback exists precisely because that is not guaranteed, but the preference

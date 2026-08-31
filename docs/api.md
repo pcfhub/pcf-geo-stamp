@@ -32,6 +32,16 @@ letter, letters digits and underscores only. A value that cannot be a logical
 name is ignored rather than sent, because it is interpolated into the request
 that attaches the note.
 
+**Latitude** and **Longitude** accept either a **Floating Point Number** or a
+**Decimal Number** column. The table above shows that as `Decimal | FP`, because
+the property declares a type group and the hub publishes the group flattened.
+
+Floating Point is the one to reach for: every standard Dataverse coordinate
+column — `address1_latitude`, `address1_longitude` and the `address2_` /
+`address3_` pairs on account, contact, lead and the rest — is Floating Point
+Number at precision 5. Whole-number columns are deliberately not accepted; the
+platform would take the binding and truncate each reading to the nearest degree.
+
 **Latitude** and **Longitude** are written only once there is a reading. Before
 the first recording the control returns neither, rather than returning zero — so
 an unmapped or untouched column stays empty instead of pointing at the Gulf of

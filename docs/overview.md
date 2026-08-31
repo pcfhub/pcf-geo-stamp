@@ -37,9 +37,10 @@ might be.
 
 - **A text column** for the formatted stamp — required, and the only thing it
   needs.
-- **Two decimal columns**, optional, if you want the numbers separately for
+- **Two numeric columns**, optional, if you want the numbers separately for
   queries or a map elsewhere. Dataverse's own `address1_latitude` and
-  `address1_longitude` are exactly this shape.
+  `address1_longitude` are exactly this shape — they are **Floating Point
+  Number** columns, and the control accepts either those or Decimal.
 - **Notes**, optional, if you want the photo half. That needs a model-driven
   form.
 

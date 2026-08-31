@@ -37,10 +37,18 @@ exact.
 ## Properties
 
 **Bound.** `value` (`SingleLine.Text`, required) takes the formatted pair.
-`latitude` and `longitude` (`Decimal`) are optional and independent — map
-neither, one, or both. They are written only once there is a reading, rather
-than defaulting to zero, because `0, 0` is a real place and would look like
-data.
+`latitude` and `longitude` are optional and independent — map neither, one, or
+both. They are written only once there is a reading, rather than defaulting to
+zero, because `0, 0` is a real place and would look like data.
+
+Both use a `<type-group>` of **`FP` and `Decimal`**, and the FP half is the
+point. They shipped as `of-type="Decimal"` alone, which made the control
+unbindable on exactly the columns it was built for: every standard Dataverse
+coordinate column — `account.address1_latitude` and the `address1_` /
+`address2_` / `address3_` pairs on contact, lead and the rest — is **Double**,
+and the form designer's column picker only offers columns whose type matches.
+The group generates `NumberProperty` either way, so the control reads
+`raw: number | null` with no casts.
 
 **Input.**
 

@@ -87,22 +87,52 @@
       that happens to be empty — so what the control keys on is whether it has
       a value to write, and `getOutputs` omits the ones it does not.
 
-      Decimal rather than FP: Dataverse's own latitude and longitude columns
-      (address1_latitude and friends) are Decimal with 5 decimal places, and a
-      control that hands back a float to a decimal column loses the difference
-      in a place nobody looks.
+      THESE SHIPPED AS of-type="Decimal" AND THAT WAS A BUG, because it made
+      the control unbindable on exactly the columns it was designed for.
+      Dataverse's own coordinate columns — account.address1_latitude and every
+      address1_/address2_/address3_ pair on contact, lead, publisher and the
+      rest — are **Double**, which PCF spells FP. A maker opening the form
+      designer on an account could not select the column at all: the picker
+      only offers columns whose type matches, and Decimal does not match Double.
+
+      So it is a type group, and this is the case type groups are for. See
+      "of-type-group costs more than it looks" in the skill for the ones they
+      are not.
     -->
+    <type-group name="coordinate">
+      <!--
+        FP first because it is the one that matters: it is what every standard
+        Dataverse address column is. Decimal is here because a custom column
+        made by a maker who wanted exact arithmetic is a reasonable thing to
+        bind, and it costs nothing to accept.
+
+        Whole.None is deliberately NOT here. It would let the designer offer an
+        integer column for a coordinate, and the platform would take the
+        binding and silently truncate every reading to the nearest degree —
+        about 111 km. A type the control cannot honour is worse in the picker
+        than absent from it.
+
+        The type-group's real costs, both accepted here: PCFHub's parser
+        flattens the group and publishes the type as "Decimal | FP" in the API
+        reference, and of-type-group is commonly read as model-driven only.
+        Neither hurts this control — the numeric columns are a model-driven
+        convenience, and canvas reads the formatted text value.
+      -->
+      <type>FP</type>
+      <type>Decimal</type>
+    </type-group>
+
     <property name="latitude"
               display-name-key="latitude_Name"
               description-key="latitude_Desc"
-              of-type="Decimal"
+              of-type-group="coordinate"
               usage="bound"
               required="false" />
 
     <property name="longitude"
               display-name-key="longitude_Name"
               description-key="longitude_Desc"
-              of-type="Decimal"
+              of-type-group="coordinate"
               usage="bound"
               required="false" />
 

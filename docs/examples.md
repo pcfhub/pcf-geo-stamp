@@ -24,13 +24,21 @@ app.
 
 ## Recording the numbers as well, for a map elsewhere
 
-The same as above, plus two `Decimal` columns so the values can be queried,
+The same as above, plus two numeric columns so the values can be queried,
 charted, or fed to a mapping component on another screen.
 
-Add `cll_latitude` and `cll_longitude` as Decimal with **precision 6** — the
-same as the control's **Decimal places**, or Dataverse rounds on save and the
-numbers stop agreeing with the text. In the component's property pane, bind
+Add `cll_latitude` and `cll_longitude` as **Floating Point Number** with
+**precision 6** — the same as the control's **Decimal places**, or Dataverse
+rounds on save and the numbers stop agreeing with the text. Decimal Number works
+too; the control accepts either. In the component's property pane, bind
 **Latitude** to `cll_latitude` and **Longitude** to `cll_longitude`.
+
+:::callout{type=info}
+To use the **standard** address columns instead — `address1_latitude` and
+`address1_longitude` on account, contact and the rest — bind straight to them.
+They are Floating Point Number at precision 5, so set **Decimal places** to 5 if
+you want the text column and the numeric ones to agree to the last digit.
+:::
 
 :::callout{type=info}
 Both are optional and independent. Mapping only **Latitude** is allowed and does

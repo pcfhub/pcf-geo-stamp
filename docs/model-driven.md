@@ -26,16 +26,23 @@ works at all. See [Limitations](limitations).
 length for the formatted pair: 24 characters covers six decimal places on both
 numbers, and the default 100 is plenty.
 
-**Latitude** and **Longitude** are optional and bind to `Decimal` columns.
-Dataverse's own `address1_latitude` and `address1_longitude` are the shape to
-copy — decimal, five or more decimal places. Map them if you want to query or
-plot the numbers; leave them unmapped if the text column is all you need. Either
-one alone is fine.
+**Latitude** and **Longitude** are optional and bind to numeric columns —
+either **Floating Point Number** or **Decimal Number**. Map them if you want to
+query or plot the numbers; leave them unmapped if the text column is all you
+need. Either one alone is fine.
+
+Dataverse's own `address1_latitude` and `address1_longitude` are Floating Point
+Number columns, which is why both types are accepted: a control that took only
+Decimal could not be bound to them at all, because the column picker offers only
+columns whose type matches.
 
 ::callout{type=info}
-Set the decimal columns' **precision** to at least the **Decimal places**
-property, or Dataverse rounds the value on save and the numeric columns quietly
-disagree with the text one.
+Set the columns' **precision** to at least the **Decimal places** property, or
+Dataverse rounds the value on save and the numeric columns quietly disagree with
+the text one. The standard address columns are **precision 5** while this
+control defaults to 6 — so on those, expect the sixth decimal place to be
+rounded away. Six places is about 0.1 m and five is about 1 m, so this rarely
+matters; set **Decimal places** to 5 if you would rather the two agreed exactly.
 ::
 
 ## Letting it attach photos
