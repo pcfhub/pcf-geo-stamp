@@ -1,6 +1,6 @@
 {
   "name": "pcf-geo-stamp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Stamp the device's location, and optionally a photo, onto a record.",
   "license": "MIT",
   "private": true,
