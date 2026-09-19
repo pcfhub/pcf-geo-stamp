@@ -4,6 +4,7 @@
   "name": "Geo Stamp",
   "tagline": "Stamp the device's location, and optionally a photo, onto a record.",
   "category": "input",
+  "hosts": ["canvas", "model-driven"],
   "tags": [
     "location",
     "geolocation",
