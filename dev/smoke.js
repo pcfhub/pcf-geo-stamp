@@ -627,6 +627,44 @@ async function main() {
             canvas.find('.GeoStamp-button--secondary').hidden === true,
         );
 
+        /*
+         * **Canvas publishes `utils` and throws `getEntityMetadata: Method not
+         * implemented.` from the call** — measured on a real canvas app,
+         * 2026-09-21, where the same refusal killed `pcf-data-table` outright.
+         * The rig refuses it here for that reason.
+         *
+         * This control never reaches it: `hasPhotoRoute` requires
+         * `webAPI.createRecord` as well, which canvas does not have, so the
+         * route is withheld before anything is called. The guard that saves it
+         * is the *other* half of the same condition — worth an assertion,
+         * because nothing about `typeof utils.getEntityMetadata === 'function'`
+         * would have.
+         */
+        /*
+         * **The button must stay away where the APIs exist and refuse.**
+         * Measured with a host probe on a real canvas app, 2026-09-22:
+         * `webAPI.createRecord` and `utils.getEntityMetadata` are both
+         * published there, so the three `typeof` tests in `hasPhotoRoute` all
+         * passed and the button was drawn on a host that cannot write the note.
+         *
+         * The bind above passes `webAPI: false`, which is a host this rig
+         * invents — canvas is not that host. This one does not, so the only
+         * thing withholding the button is `modelDrivenHost`.
+         */
+        const canvasWithApis = geo({ host: 'canvas', position: SEATTLE });
+
+        check(
+            'the photo button stays hidden on canvas, where the APIs exist and refuse',
+            canvasWithApis.find('.GeoStamp-button--secondary').hidden === true,
+            'hidden with webAPI and utils both present',
+        );
+
+        check(
+            'and a host that refuses metadata does not take the control with it',
+            canvas.find('.GeoStamp-coordinates') !== null,
+            'the control rendered against a refusing canvas host',
+        );
+
         check(
             'and location still works there — canvas has geolocation',
             (() => {

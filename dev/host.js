@@ -657,6 +657,36 @@
              * here, and what regresses is the URL the control built, not the
              * platform's ability to open it.
              */
+            /**
+             * `context.page`, which is not in the typings and is absent from
+             * the API reference entirely.
+             *
+             * **It is the only measured way to tell a model-driven host from a
+             * canvas one.** Every other surface is published on both — fifteen
+             * of fifteen, measured with a host probe on a real canvas app,
+             * 2026-09-22 — so `typeof x === 'function'` answers the same on
+             * each. `getClientUrl` is published on both too, but it *answers*
+             * on one and **throws** on the other.
+             *
+             * This rig had no `page` at all, so the moment `hasPhotoRoute`
+             * started asking, it withheld the photo button on every host.
+             * `o.page: false` models a model-driven host that publishes neither
+             * this nor `Xrm`, where the button is withheld deliberately.
+             */
+            page: o.page === false
+                ? undefined
+                : {
+                    getClientUrl: function () {
+                        log('page.getClientUrl');
+
+                        if (o.host === 'canvas') {
+                            throw new Error('getClientUrl: Method not implemented.');
+                        }
+
+                        return 'https://rig.crm.invalid';
+                    },
+                },
+
             navigation: {
                 openUrl: function (url) {
                     log('navigation.openUrl', url);
@@ -682,6 +712,22 @@
                 ? {
                     getEntityMetadata: function (entityName, attributes) {
                         log('getEntityMetadata', entityName);
+
+                        /*
+                         * **Canvas publishes `utils` and refuses to run it,
+                         * synchronously.** Measured on a real canvas app,
+                         * 2026-09-21. A rig that omits the object is a
+                         * friendlier host than the platform: a control guarding
+                         * with `typeof … === 'function'` passes against both an
+                         * absent object and a refusing one, and only the second
+                         * throws in a real app.
+                         *
+                         * Thrown, not rejected. A rejection is catchable; a
+                         * synchronous throw escapes the call.
+                         */
+                        if (o.host === 'canvas') {
+                            throw new Error('getEntityMetadata: Method not implemented.');
+                        }
 
                         function Metadata() {
                             // Private fields, and the only things Object.keys sees.

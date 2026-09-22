@@ -7,7 +7,7 @@
   -->
   <control namespace="PCFHub"
            constructor="GeoStamp"
-           version="0.1.1"
+           version="0.1.2"
            display-name-key="GeoStamp_Name"
            description-key="GeoStamp_Desc"
            control-type="standard">

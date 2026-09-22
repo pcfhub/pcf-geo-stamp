@@ -533,11 +533,54 @@ export class GeoStamp implements ComponentFramework.StandardControl<IInputs, IOu
      * `context.webAPI` is typed as always present and is absent in canvas;
      * `context.utils` is typed the same way and is gated behind `Utility`.
      */
+    /**
+     * Whether this host is one where a model-driven-only API means anything.
+     *
+     * **`typeof x.method === 'function'` is not that test.** Measured with a
+     * host probe on a real canvas app, 2026-09-22: **fifteen of fifteen**
+     * platform surfaces are published there — `webAPI.createRecord` and
+     * `utils.getEntityMetadata` among them — and the ones safe to call throw
+     * `Method not implemented.` from the call itself.
+     *
+     * What discriminates is **an answer rather than a method**. `getClientUrl`
+     * refuses by throwing, and a thrown refusal is an answer once it is caught.
+     * It is undocumented, which is why it is read defensively and why the `Xrm`
+     * global is tried after it.
+     */
+    private modelDrivenHost(context: ComponentFramework.Context<IInputs>): boolean {
+        const ask = <T>(call: () => T): T | undefined => {
+            try {
+                return call();
+            } catch {
+                return undefined;
+            }
+        };
+
+        const page = (context as { page?: { getClientUrl?: unknown } }).page;
+        const fromPage = typeof page?.getClientUrl === 'function'
+            ? ask(() => (page.getClientUrl as () => unknown)())
+            : undefined;
+        const fromGlobal = ask(() => (globalThis as {
+            Xrm?: { Utility?: { getGlobalContext?: () => { getClientUrl?: () => unknown } } };
+        }).Xrm?.Utility?.getGlobalContext?.()?.getClientUrl?.());
+
+        return [fromPage, fromGlobal].some((url) => typeof url === 'string' && url !== '');
+    }
+
+    /**
+     * Whether a photo can be captured *and saved*.
+     *
+     * The three methods below all exist on canvas, so the photo button was
+     * offered there — on a host where the note it would write cannot be
+     * created. `docs/` has said since 0.1.0 that the photo half is model-driven
+     * only; the code had no way to tell until `modelDrivenHost`.
+     */
     private hasPhotoRoute(context: ComponentFramework.Context<IInputs>): boolean {
         return (
             typeof context.device?.captureImage === 'function'
             && typeof context.webAPI?.createRecord === 'function'
             && typeof context.utils?.getEntityMetadata === 'function'
+            && this.modelDrivenHost(context)
         );
     }
 
