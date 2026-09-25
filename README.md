@@ -5,6 +5,8 @@ Stamp the device's location, and optionally a photo, onto a record.
 [![Build](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/build.yml/badge.svg)](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/build.yml)
 [![Release](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/release.yml/badge.svg)](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/release.yml)
 
+[![Try it live on PCFHub](https://pcfhub.dev/badges/try-it-live.svg)](https://pcfhub.dev/components/pcf-geo-stamp)
+
 Documentation lives on [PCFHub](https://pcfhub.dev/components/pcf-geo-stamp), built
 from the `docs/` directory in this repository. Edit the Markdown here; the hub
 recompiles it.
