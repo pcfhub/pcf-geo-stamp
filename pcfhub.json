@@ -38,18 +38,37 @@
     ]
   },
   "demo": {
-    "fidelity": "limited",
+    "fidelity": "mocked",
     "bundle": "out/controls/GeoStamp/bundle.js",
     "styles": [
       "out/controls/GeoStamp/css/GeoStamp.css"
     ],
+    "datasetFixture": "demo/record.json",
     "limitations": [
-      "Nothing here knows where you are. The demo sandbox has no context.device, so pressing Record location shows the control's own \"not available on this client\" state rather than a reading — which is also what a model-driven form in a browser shows, because getCurrentPosition is documented for canvas apps and the mobile client only. A real fix needs the Power Apps mobile app or a canvas app.",
-      "Add photo is not offered at all. It needs context.webAPI to write a note and context.utils to resolve the table name behind it, and the sandbox has neither — so the button is hidden here exactly as it is in a canvas app, rather than shown and failing.",
+      "The location is simulated. On the Power Apps mobile app, Record location reads the device's position; the demo cannot reach yours, so the Stamping on the mobile app preset answers context.device.getCurrentPosition() with a fixed reading — 47.620422, -122.349358, accurate to 8 m — and the event log under the demo says so. What the control does with it is real: the readout, the precision, the accuracy label and the latitude and longitude outputs. The other presets declare no position, so Record location reports that the reading could not be taken, which is the honest answer on a model-driven form in a desktop browser: getCurrentPosition is documented for canvas apps and the mobile client only.",
+      "Add photo works against the demo's stand-in Dataverse. The demo's form is an account, Northwind Traders, with a Notes table behind it, so the control finds the model-driven route it needs. On the Stamping on the mobile app preset, captureImage opens your browser's own file picker in place of the camera — the picture is real, the camera is not — and the control resolves the table through utils.getEntityMetadata and writes a Note with webAPI.createRecord, bound to the account; the lastNoteId output shows the new Note. Nothing leaves the browser. On the other presets captureImage is refused, as on a desktop form, and the control says the photo could not be saved.",
       "The map is off, and turning it on is a licensing decision rather than a display one. It loads a tile from tile.openstreetmap.org, which is why the manifest declares external-service-usage and why any app containing this component is a premium app. Everything else the control does works with it off.",
-      "The presets below hand the control a coordinate directly, the way a saved record would. That is the state after a stamp, not a stamp — the readout, the precision, the accuracy label and the theming are all real; only the device call behind them is absent."
+      "A recorded location, Fewer decimal places and Nothing recorded yet hand the control a coordinate directly, or none, the way a saved record would. That is the state after a stamp, or before one — the readout, the precision, the accuracy label and the theming are all real."
     ],
     "presets": [
+      {
+        "slug": "mobile",
+        "name": "Stamping on the mobile app",
+        "description": "An empty record on the Power Apps mobile app. Record location takes a simulated reading, and Add photo saves a picture you choose as a note on the record — as the camera and GPS would.",
+        "props": {
+          "value": "",
+          "coordinatePrecision": 6,
+          "accuracyThreshold": 100,
+          "showMap": false
+        },
+        "isDefault": true,
+        "state": {
+          "device": {
+            "position": { "latitude": 47.620422, "longitude": -122.349358, "accuracy": 8 },
+            "files": true
+          }
+        }
+      },
       {
         "slug": "recorded",
         "name": "A recorded location",
@@ -59,8 +78,7 @@
           "coordinatePrecision": 6,
           "accuracyThreshold": 100,
           "showMap": false
-        },
-        "isDefault": true
+        }
       },
       {
         "slug": "coarse",

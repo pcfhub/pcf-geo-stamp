@@ -1,0 +1,31 @@
+{
+    "dataverse": {
+        "record": {
+            "entityType": "account",
+            "id": "7c1e4b2a-5d3f-4a8e-9b6c-2f0a1d4e8c57",
+            "name": "Northwind Traders"
+        },
+        "tables": {
+            "account": {
+                "entitySet": "accounts",
+                "primaryId": "accountid",
+                "primaryName": "name"
+            },
+            "annotation": {
+                "entitySet": "annotations",
+                "primaryId": "annotationid",
+                "primaryName": "subject"
+            }
+        },
+        "relationships": [
+            {
+                "kind": "oneToMany",
+                "schemaName": "Account_Annotation",
+                "referencedEntity": "account",
+                "referencingEntity": "annotation",
+                "referencingAttribute": "objectid",
+                "referencingNavigationProperty": "objectid_account"
+            }
+        ]
+    }
+}

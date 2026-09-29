@@ -94,22 +94,24 @@ the person deciding whether to install it.
 
 ## On the hub
 
-`demo.fidelity` is `limited`, and unusually it is settled three times over —
-any one of the device APIs, the `webAPI` write, or the external tile would be
-enough on its own. This is the first control in the catalogue where an external
-service is one of the reasons.
+`demo.fidelity` is `mocked`: both presses work in the demo, against simulated
+answers, and the map stays off because loading its tile is a licensing
+decision.
 
-What the demo does show is the state the control spends most of its life in: a
-column that already holds a reading. The readout, the decimal-places property,
-the approximate-accuracy label and the theming are all real there. Three presets
-cover a recorded location, the same one at two decimal places, and the empty
-state. What is absent is the press itself — the sandbox has no `context.device`,
-so **Record location** shows the control's own "not available on this client"
-message, which is exactly what a model-driven form in a browser shows too.
-
-**Add photo** is not rendered in the demo at all, for the same reason it is not
-rendered in a canvas app: without `context.webAPI` there is no condition under
-which it could work, and a disabled button would promise one.
+- **Stamping on the mobile app**, the default preset, declares the mobile
+  client's device (`state.device`, pcfhub/pcfhub#60): a position, and a file
+  picker standing in for the camera. **Record location** takes a simulated
+  reading, 47.620422, -122.349358 accurate to 8 m, and the event log says it was
+  simulated.
+- **Add photo** is offered, because `demo/record.json` gives the demo a stand-in
+  Dataverse: an account, Northwind Traders, with a Notes table behind it. The
+  photo is a real file you choose; the control resolves the table through
+  `getEntityMetadata` and writes a Note with `webAPI.createRecord`, and
+  `lastNoteId` shows it. Nothing leaves the browser.
+- The other three presets cover a recorded location, the same one at two
+  decimal places, and the empty state. They declare no device, so both presses
+  are refused, as on a model-driven form in a desktop browser, and the control
+  says why.
 
 
 ## Install

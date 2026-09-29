@@ -141,17 +141,46 @@ the platform, not of the control. Said in `docs/model-driven.md` and
 
 ## Demo
 
-`limited`, and settled three times over: the device APIs, the `webAPI` write,
-and the external tile each forbid `full` independently. This is the catalogue's
-first control where an external service is one of the reasons.
+`mocked` since 2026-09-29; `limited` before, settled three times over — the
+device APIs, the `webAPI` write and the external tile each forbade `full`. The
+first two now run against stand-ins, and the tile is a licensing decision, not
+something a harness could supply, so it stays a limitation.
 
-The presets hand the control a coordinate directly, which is the state it spends
-most of its life in — a saved record being displayed rather than a recording
-being taken. Everything visible in that state is real. What the sandbox cannot
-do is the press: it has no `context.device`, so **Record location** shows the
-control's own "not available on this client" message, which is also exactly what
-a model-driven form in a browser shows. **Add photo** is not rendered there at
-all, for the same reason it is not rendered in canvas.
+**Both presses work in the demo since 2026-09-29.** pcfhub/pcfhub#60 let a
+preset declare `state.device`, describing the Power Apps mobile client. The new
+default preset, *Stamping on the mobile app*, declares a position (47.620422,
+-122.349358, accuracy 8) and `files: true`, so `getCurrentPosition()` answers
+and `captureImage()` opens the browser's file picker; the harness logs both as
+simulated.
+
+The photo half also needed a model-driven host, because `hasPhotoRoute()` asks
+`modelDrivenHost()`, which reads `page.getClientUrl()` — and the harness only
+publishes `page` behind a stand-in Dataverse. `demo/record.json` is that: only a
+`dataverse` section, with the form's account (Northwind Traders), an
+`annotation` table and the `Account_Annotation` one-to-many, in the shape
+pcf-attachment-list's fixture uses. So `getEntityMetadata(account)` answers the
+entity set and `webAPI.createRecord('annotation', …)` accepts the
+`objectid_account@odata.bind`.
+
+**The earlier "Add photo appears here" was a misreading.** Checking the button
+list on the harness without the fixture read the button's text, which render()
+sets whether or not it is hidden; `hidden` was `true` all along, as the old
+limitation said.
+
+Checked with 0.1.2's published bundle against that harness, before the push:
+
+- *Stamping on the mobile app*: Record location read "47.620422, -122.349358 ·
+  Accurate to about 8 m." and set the latitude and longitude outputs; Add photo,
+  with a PNG handed to the file picker, logged `captureImage` (simulated),
+  `getEntityMetadata(account)` and `createRecord(annotation)`, said "Photo saved
+  to the record's notes." and set `lastNoteId`;
+- *A recorded location*, with no device declared: Record location said "The
+  location could not be read: …does not have it", and Add photo "The photo could
+  not be saved: …does not have it".
+
+The native file dialog itself was not driven — a script handed the picker its
+file — and what the mobile client does when the camera is dismissed is
+unmeasured (the harness rejects).
 
 ## Not verified
 
