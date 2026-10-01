@@ -3,6 +3,7 @@
   "slug": "pcf-geo-stamp",
   "name": "Geo Stamp",
   "tagline": "Stamp the device's location, and optionally a photo, onto a record.",
+  "summary": "Records where somebody was standing when they filled in a record, into a text column you already have, with one button. On a phone, the same press can attach a photo.\n\n- Says plainly when location is not available, which is the case for a model-driven form open in a browser\n- Records an imprecise reading and says how far off it might be, rather than refusing it\n\nLocation works in canvas apps and in the model-driven mobile app.",
   "category": "input",
   "hosts": ["canvas", "model-driven"],
   "tags": [
