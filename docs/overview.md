@@ -9,6 +9,10 @@ order: 1
 Records where somebody was standing when they filled a record in, into a column
 you already have — and, on a phone, attaches a photo from the same press.
 
+:::callout{type=warning}
+**Reference example · built with AI.** This control was written with AI (Claude) and tested on a live Dataverse form; its code has not been reviewed line by line. It is published as a worked example and is not maintained — read the source and [SPEC.md](https://github.com/pcfhub/pcf-geo-stamp/blob/main/SPEC.md) (what was measured on the form) before you use it. Fixes are not guaranteed.
+:::
+
 ::image{src=media/screenshot.png alt="Geo Stamp on a form" zoom}
 
 ## Why this one

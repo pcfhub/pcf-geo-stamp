@@ -14,6 +14,8 @@
     "photo",
     "premium"
   ],
+  "supportLevel": "reference",
+  "builtWith": "ai",
   "control": {
     "namespace": "PCFHub",
     "constructor": "GeoStamp",

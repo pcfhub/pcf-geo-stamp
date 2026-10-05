@@ -2,6 +2,8 @@
 
 Stamp the device's location, and optionally a photo, onto a record.
 
+> **Reference example · built with AI.** This control was written with AI (Claude) and tested on a live Dataverse form; its code has not been reviewed line by line. It is published as a worked example and is not maintained — read the source and [`SPEC.md`](SPEC.md) (what was measured on the form) before you use it. Fixes are not guaranteed.
+
 [![Build](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/build.yml/badge.svg)](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/build.yml)
 [![Release](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/release.yml/badge.svg)](https://github.com/pcfhub/pcf-geo-stamp/actions/workflows/release.yml)
 
@@ -10,7 +12,6 @@ Stamp the device's location, and optionally a photo, onto a record.
 Documentation lives on [PCFHub](https://pcfhub.dev/components/pcf-geo-stamp), built
 from the `docs/` directory in this repository. Edit the Markdown here; the hub
 recompiles it.
-
 
 ## What it does
 
@@ -34,7 +35,6 @@ labelled**, not discarded. A reading from inside a warehouse can be a kilometre
 out; refusing it leaves somebody with an empty column and no way forward, and
 accepting it silently puts a kilometre of error into a record that reads as
 exact.
-
 
 ## Properties
 
@@ -91,7 +91,6 @@ shipped makes no external request. The licensing consequence still follows the
 declaration rather than the configuration, and `docs/limitations.md` says so to
 the person deciding whether to install it.
 
-
 ## On the hub
 
 `demo.fidelity` is `mocked`: both presses work in the demo, against simulated
@@ -112,7 +111,6 @@ decision.
   decimal places, and the empty state. They declare no device, so both presses
   are refused, as on a model-driven form in a desktop browser, and the control
   says why.
-
 
 ## Install
 
